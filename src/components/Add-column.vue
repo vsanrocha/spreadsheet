@@ -26,6 +26,8 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   data: () => ({
     columnTitle: "",
@@ -36,6 +38,9 @@ export default {
     typesOptions: ["Date", "Select", "Text", "Number"]
   }),
   methods: {
+    ...mapActions({
+      commitColumn: "commitSepreadsheetData"
+    }),
     createOptionsList() {
       this.selectOptions.push(this.newOption);
       this.newOption = "";
@@ -45,16 +50,17 @@ export default {
       newColumn.title = this.columnTitle;
       newColumn.type = this.selectedType;
       newColumn.required = this.isRequired;
-      newColumn.data = this.generateRows(this.selectedType, this.selectOptions);
-      this.$emit("newColumn", newColumn);
+      newColumn.data = this.generateRows();
+      this.commitColumn(newColumn);
+      this.$emit("newColumn");
     },
-    generateRows(type, options) {
+    generateRows() {
       let rows = {};
-      for (let i = 0; i < 9; i++) {
-        if (type.match(/text|number/)) {
+      for (let i = 0; i < 10; i++) {
+        if (this.selectedType.match(/Text|Number/)) {
           rows[i] = "";
         } else {
-          rows[i] = { data: "", options: options };
+          rows[i] = { data: "", options: this.selectOptions };
         }
       }
       return rows;

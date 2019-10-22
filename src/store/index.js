@@ -4,8 +4,20 @@ import Vuex from "vuex";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  state: {},
-  mutations: {},
-  actions: {},
+  state: {
+    spreadsheetData: []
+  },
+  mutations: {
+    setSpreadsheetData(state, payload) {
+      state.spreadsheetData = payload;
+    }
+  },
+  actions: {
+    commitSepreadsheetData({ commit, state }, data) {
+      console.log("data:", data);
+      const spreadsheetData = [...state.spreadsheetData, data];
+      commit("setSpreadsheetData", spreadsheetData);
+    }
+  },
   modules: {}
 });
