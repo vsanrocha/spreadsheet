@@ -1,7 +1,19 @@
 <template>
-  <v-container class="fill-height" fluid>
-    <v-layout justify-center align-center row wrap v-if="!hasSpreadsheet">
-      <v-flex xs12 md4>
+  <v-container
+    class="fill-height"
+    fluid
+  >
+    <v-layout
+      justify-center
+      align-center
+      row
+      wrap
+      v-if="!hasSpreadsheet"
+    >
+      <v-flex
+        xs12
+        md4
+      >
         <v-card>
           <v-card-title primary-title>
             Create a new Spreadsheet
@@ -12,34 +24,91 @@
         </v-card>
       </v-flex>
     </v-layout>
-    <v-layout row wrap v-else justify-center>
-      <v-flex xs12 md10>
-        <v-card flat color="pink lighten-4">
-          <v-layout row wrap>
-            <v-flex xs2 v-for="(column, index) in spreadsheetData" :key="index">
-              <v-subheader class="text-center">{{ column.title }}</v-subheader>
+    <v-layout
+      v-else
+      justify-center
+    >
+      <v-flex
+        xs12
+        md10
+      >
+        <v-card
+          flat
+          class="pa-7"
+        >
+          <v-layout>
+            <v-sheet
+              width="160px"
+              v-for="(column, index) in spreadsheetData"
+              :key="index"
+            >
+              <v-text-field
+                :value="column.title"
+                single-line
+                full-width
+                hide-details
+                dense
+                filled
+                outlined
+                class="text-center"
+              ></v-text-field>
               <div
                 class="spreadsheet-row"
                 v-for="(row, indexRow) in column.data"
                 :key="indexRow"
               >
-                <div class="row-number" v-if="index == 0">
+                <div
+                  class="row-number"
+                  v-if="index == 0"
+                >
                   {{ Number(indexRow) + 1 }}
                 </div>
-                <v-card outlined>
+                <div>
                   <v-text-field
                     full-width
                     hide-details
                     dense
+                    outlined
                     v-if="column.type.match(/text|number/i)"
                   />
                   <v-select
                     v-if="column.type == 'Select'"
-                    :options="row.options"
+                    full-width
+                    hide-details
+                    dense
+                    outlined
+                    :items="row.options"
                   />
-                </v-card>
+                  <v-menu
+                    v-if="column.type == 'Date'"
+                    ref="menu"
+                    :close-on-content-click="false"
+                    :return-value.sync="date"
+                    transition="scale-transition"
+                    offset-y
+                  >
+                    <template v-slot:activator="{ on }">
+                      <v-text-field
+                        v-model="date"
+                        readonly
+                        full-width
+                        hide-details
+                        dense
+                        outlined
+                        prepend-inner-icon="event"
+                        v-on="on"
+                      ></v-text-field>
+                    </template>
+                    <v-date-picker
+                      v-model="date"
+                      no-title
+                      scrollable
+                      @input="menu = false"
+                    />
+                  </v-menu>
+                </div>
               </div>
-            </v-flex>
+            </v-sheet>
           </v-layout>
         </v-card>
       </v-flex>
@@ -54,7 +123,9 @@ import { mapState } from "vuex";
 export default {
   components: { AddColumn },
   data: () => ({
-    hasSpreadsheet: true
+    hasSpreadsheet: false,
+    date: new Date().toISOString().substr(0, 10),
+    menu: false
   }),
   computed: {
     ...mapState({
