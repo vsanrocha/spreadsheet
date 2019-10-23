@@ -96,6 +96,7 @@
                           rules.date,
                           column.required ? rules.required : false
                         ]"
+                        v-mask="'####-##-##'"
                         prepend-inner-icon="mdi-calendar-range"
                         v-on="on"
                       />
@@ -135,11 +136,13 @@
 </template>
 
 <script>
+import { mask } from "vue-the-mask";
 import AddColumn from "../components/Add-column.vue";
 import { mapState } from "vuex";
 
 export default {
   components: { AddColumn },
+  directives: { mask },
   data: () => ({
     hasSpreadsheet: false,
     showModal: false,
