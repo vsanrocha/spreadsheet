@@ -46,7 +46,11 @@
                     hide-details
                     dense
                     outlined
-                    :rules="[rules.string]"
+                    :validate-on-blur="true"
+                    :rules="[
+                      rules.string,
+                      column.required ? rules.required : false
+                    ]"
                     v-model="spreadsheetData[index].rows[indexRow]"
                     v-if="column.type == 'Text'"
                   />
@@ -55,7 +59,11 @@
                     hide-details
                     dense
                     outlined
-                    :rules="[validationRules.number]"
+                    :validate-on-blur="true"
+                    :rules="[
+                      rules.number,
+                      column.required ? rules.required : false
+                    ]"
                     v-model="spreadsheetData[index].rows[indexRow]"
                     v-if="column.type == 'Number'"
                   />
@@ -65,6 +73,7 @@
                     hide-details
                     dense
                     outlined
+                    :rules="[column.required ? rules.required : false]"
                     v-model="spreadsheetData[index].rows[indexRow].data"
                     :items="row.options"
                   />
@@ -78,11 +87,15 @@
                     <template v-slot:activator="{ on }">
                       <v-text-field
                         v-model="spreadsheetData[index].rows[indexRow]"
-                        readonly
                         full-width
                         hide-details
                         dense
                         outlined
+                        :validate-on-blur="true"
+                        :rules="[
+                          rules.date,
+                          column.required ? rules.required : false
+                        ]"
                         prepend-inner-icon="mdi-calendar-range"
                         v-on="on"
                       />
@@ -97,7 +110,7 @@
                 </div>
               </div>
               <v-btn color="primary" outlined @click="addRows"
-                >Add more rows</v-btn
+                >Add 10 rows</v-btn
               >
             </v-sheet>
             <v-flex xs2>
@@ -132,16 +145,22 @@ export default {
     showModal: false,
     rules: {
       required: value => !!value || "Required.",
-      counter: value => value.length <= 20 || "Max 20 characters",
-      email: value => {
-        const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return pattern.test(value) || "Invalid e-mail.";
-      },
       number: value => {
-        const pattern = /^\w+$/;
-        !!value && value.teste(pattern);
+        const pattern = /^\d+$/;
+        return !value || pattern.test(value) || "Only number";
       },
-      string: value => !!value && !!value.match(/^[a-zA-Z]+$/)
+      date: value => {
+        const date = new Date(value);
+        const day = new Date(value).getDate();
+        console.log(Boolean(+date) && date.getDate() == day);
+        return (
+          !value || (Boolean(+date) && date.getDate() == day) || "Only date"
+        );
+      },
+      string: value => {
+        const pattern = /^[a-zA-Z\s]+$/i;
+        return !value || pattern.test(value) || "Only string";
+      }
     },
     validationRules: {}
   }),
