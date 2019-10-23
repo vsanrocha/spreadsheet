@@ -27,7 +27,7 @@
 
 <script>
 import { mapActions } from "vuex";
-
+import { mapState } from "vuex";
 export default {
   data: () => ({
     columnTitle: "",
@@ -37,6 +37,11 @@ export default {
     isRequired: false,
     typesOptions: ["Date", "Select", "Text", "Number"]
   }),
+  computed: {
+    ...mapState({
+      spreadsheetData: state => state.spreadsheetData
+    })
+  },
   methods: {
     ...mapActions({
       commitColumn: "commitSepreadsheetData"
@@ -50,17 +55,24 @@ export default {
       newColumn.title = this.columnTitle;
       newColumn.type = this.selectedType;
       newColumn.required = this.isRequired;
-      newColumn.data = this.generateRows();
+      newColumn.rows = this.generateRows();
       this.commitColumn(newColumn);
       this.$emit("newColumn");
     },
     generateRows() {
-      let rows = {};
-      for (let i = 0; i < 10; i++) {
-        if (this.selectedType.match(/Text|Number/)) {
-          rows[i] = "";
-        } else {
+      let rows = [];
+      console.log(
+        "TCL: generateRows -> this.spreadsheetData",
+        this.spreadsheetData
+      );
+      let length = this.spreadsheetData.length
+        ? this.spreadsheetData[0].rows.length
+        : 10;
+      for (let i = 0; i < length; i++) {
+        if (this.selectedType == "Select") {
           rows[i] = { data: "", options: this.selectOptions };
+        } else {
+          rows[i] = "";
         }
       }
       return rows;
