@@ -1,8 +1,18 @@
 <template>
   <v-container class="fill-height">
-    <v-layout justify-center column wrap xs12>
-      <v-flex xs12 md10>
-        <v-card flat class="pa-9">
+    <v-layout
+      justify-center
+      column
+      wrap
+    >
+      <v-flex
+        xs12
+        md10
+      >
+        <v-card
+          flat
+          class="pa-9"
+        >
           <v-layout>
             <v-sheet
               width="160px"
@@ -24,7 +34,10 @@
                 v-for="(row, indexRow) in column.rows"
                 :key="indexRow"
               >
-                <div class="row-number" v-if="index == 0">
+                <div
+                  class="row-number"
+                  v-if="index == 0"
+                >
                   {{ Number(indexRow) + 1 }}
                 </div>
                 <div>
@@ -100,9 +113,12 @@
                   </v-menu>
                 </div>
               </div>
-              <v-btn color="primary" outlined @click="addRows" block
-                >Add 10 rows</v-btn
-              >
+              <v-btn
+                color="primary"
+                outlined
+                @click="addRows"
+                block
+              >Add 10 rows</v-btn>
             </v-sheet>
             <v-flex xs2>
               <v-btn
@@ -111,18 +127,23 @@
                 outlined
                 min-height="440"
                 @click.stop="showModal = true"
-                >Add a new column</v-btn
-              >
+              >Add a new column</v-btn>
             </v-flex>
           </v-layout>
         </v-card>
       </v-flex>
       <v-layout justify-center>
-        <v-btn color="primary" @click="sendData">Send Data</v-btn>
+        <v-btn
+          color="primary"
+          @click="sendData"
+        >Send Data</v-btn>
       </v-layout>
     </v-layout>
 
-    <v-dialog v-model="showModal" max-width="350">
+    <v-dialog
+      v-model="showModal"
+      max-width="350"
+    >
       <v-card class="pa-4">
         <AddColumn @success="showModal = false" />
       </v-card>
