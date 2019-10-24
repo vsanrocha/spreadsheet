@@ -1,6 +1,6 @@
 <template>
-  <v-container justify-center align-center>
-    <v-layout justify-center>
+  <v-container class="fill-height">
+    <v-layout justify-center column wrap xs12>
       <v-flex xs12 md10>
         <v-card flat class="pa-9">
           <v-layout>
@@ -117,9 +117,9 @@
           </v-layout>
         </v-card>
       </v-flex>
-    </v-layout>
-    <v-layout justify-center>
-      <v-btn color="primary" @click="sendData">Send Data</v-btn>
+      <v-layout justify-center>
+        <v-btn color="primary" @click="sendData">Send Data</v-btn>
+      </v-layout>
     </v-layout>
 
     <v-dialog v-model="showModal" max-width="350">
