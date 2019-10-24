@@ -14,10 +14,8 @@ export default new Vuex.Store({
   },
   actions: {
     commitSepreadsheetData({ commit, state }, data) {
-      console.log("data:", data);
       const spreadsheetData = [...state.spreadsheetData, data];
       commit("setSpreadsheetData", spreadsheetData);
     }
-  },
-  modules: {}
+  }
 });
