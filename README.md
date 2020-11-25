@@ -1,4 +1,4 @@
-# Vinicius Rocha
+# Spreadsheet Vue
 
 I used VUE.js to do this project because of my experience in this framework.
 
